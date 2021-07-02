@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Service
 public class SysTypeService implements BaseService<SysTypeEntity>{
+
     @Autowired
     private SysTypeDao sysTypeDao;
 
@@ -63,6 +64,9 @@ public class SysTypeService implements BaseService<SysTypeEntity>{
      */
     @Override
     public boolean update(SysTypeEntity sysTypeEntity) {
+        SysTypeEntity save = sysTypeDao.save(sysTypeEntity);
+        if(save!=null)
+            return true;
         return false;
     }
 

@@ -34,6 +34,7 @@ public class SysUserService implements BaseService<SysUserEntity>{
                 sysUserEntity.setAvator("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2572099439,3928901169&fm=26&gp=0.jpg");
             }
             SysUserEntity save = sysUserDao.save(sysUserEntity);
+            System.out.println(save);
             if(save!=null){
                 return true;
             }

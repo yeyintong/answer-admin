@@ -92,7 +92,6 @@ public class SysUserController implements BaseController<SysUserEntity> {
         return R.error(500,"更新失败");
     }
 
-
     @ApiOperation(httpMethod = "GET", value = "获取所有用户信息", response = R.class,
             notes = "获取所有用户信息")
     @GetMapping("/all")

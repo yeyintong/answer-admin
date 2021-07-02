@@ -34,4 +34,10 @@ public class SysUserEntity {
     private Timestamp createTime;
     @Transient
     private String token;
+    @Column
+    private int type;
+
+
+
+
 }

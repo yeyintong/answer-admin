@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/type")
 public class SysTypeController implements BaseController<SysTypeEntity>{
+
     @Autowired
     private SysTypeService sysTypeService;
 
@@ -43,9 +44,15 @@ public class SysTypeController implements BaseController<SysTypeEntity>{
         return R.error("删除失败");
     }
 
+    @ApiOperation(httpMethod = "POST",value = "修改类型",response = R.class,notes = "修改类型")
+    @PostMapping("/update")
     @Override
     public R update(SysTypeEntity sysTypeEntity) {
-        return null;
+        boolean update = sysTypeService.update(sysTypeEntity);
+        if (update)
+            return R.ok("更新成功");
+        else
+            return R.error("修改失败");
     }
 
 
