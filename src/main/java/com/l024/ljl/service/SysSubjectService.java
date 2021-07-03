@@ -1,24 +1,31 @@
 package com.l024.ljl.service;
 
+import com.l024.ljl.dao.SysOptionDao;
 import com.l024.ljl.dao.SysSubjectDao;
+import com.l024.ljl.dao.SysTypeDao;
 import com.l024.ljl.entity.PageEntity;
+import com.l024.ljl.entity.SysOptionEntity;
 import com.l024.ljl.entity.SysSubjectEntity;
 import com.l024.ljl.util.StringUtil;
-import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 试题
  */
 @Service
-public class SysSubjectService implements BaseService<SysSubjectEntity>{
+public class SysSubjectService implements BaseService<SysSubjectEntity> {
     @Autowired
     private SysSubjectDao sysSubjectDao;
+    @Autowired
+    private SysOptionDao sysOptionDao;
+    @Autowired
+    private SysTypeDao sysTypeDao;
 
     /**
      * 增加试题
@@ -26,13 +33,30 @@ public class SysSubjectService implements BaseService<SysSubjectEntity>{
      * @return
      */
     @Transactional
-    @Override
     public boolean add(SysSubjectEntity sysSubjectEntity) {
-        SysSubjectEntity save = sysSubjectDao.save(sysSubjectEntity);
-        if(save!=null)
-            return true;
-        else return false;
+        boolean flag = true;
+        SysSubjectEntity sysSubjectEntity1 = sysSubjectDao.save(sysSubjectEntity);
 
+        if (sysSubjectEntity1 != null) {
+            // subject表插入记录成功，继续插入 option表
+            // 获取该题目的 id作为选项中的 subject_id
+            long subject_id = sysSubjectEntity1.getId();
+            // 获取插入成功后的 sysSubjectEntity1 这条记录的选项属性
+            List<SysOptionEntity> sysOptionEntityList = sysSubjectEntity1.getOptions();
+            // 循环插入每个选项
+            for (SysOptionEntity sysOptionEntity : sysOptionEntityList) {
+                // 设置每一个 sysOptionEntity 中的 subject_id属性
+                sysOptionEntity.setSubject_id(subject_id);
+                // 将每一条 sysOptionEntity 记录插入 option表
+                SysOptionEntity sysOptionEntity1 = sysOptionDao.save(sysOptionEntity);
+                if (sysOptionEntity1 == null) {
+                    flag = false;
+                }
+            }
+            return flag;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -45,11 +69,8 @@ public class SysSubjectService implements BaseService<SysSubjectEntity>{
     public boolean del(long id) {
         try {
             sysSubjectDao.deleteById(id);
-
         }catch (Exception e){
-
             return false;
-
         }
         return true;
     }
@@ -58,7 +79,6 @@ public class SysSubjectService implements BaseService<SysSubjectEntity>{
      * 获取所有试题
      * @return
      */
-    @Override
     public List<SysSubjectEntity> getAll() {
         Iterable<SysSubjectEntity> users = sysSubjectDao.findAll();
         List<SysSubjectEntity> list = new ArrayList<>();
@@ -73,9 +93,14 @@ public class SysSubjectService implements BaseService<SysSubjectEntity>{
      */
     @Transactional
     public boolean update(SysSubjectEntity sysSubjectEntity) {
-        sysSubjectDao.save(sysSubjectEntity);
-        return true;
-
+        long id = sysSubjectEntity.getId();
+        Optional<SysSubjectEntity> subjectEntity = sysSubjectDao.findById(id);
+        if (subjectEntity == null) {
+            return false;
+        } else {
+            sysSubjectDao.save(sysSubjectEntity);
+            return true;
+        }
     }
 
     /**
@@ -84,7 +109,6 @@ public class SysSubjectService implements BaseService<SysSubjectEntity>{
      * @param size
      * @return
      */
-    @Override
     public PageEntity<SysSubjectEntity> page(int page, int size) {
         return null;
     }
