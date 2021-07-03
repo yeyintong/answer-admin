@@ -1,15 +1,11 @@
 package com.l024.ljl.controller;
 
-import com.l024.ljl.entity.SysOptionEntity;
 import com.l024.ljl.entity.SysSubjectEntity;
-import com.l024.ljl.entity.SysTypeEntity;
 import com.l024.ljl.service.SysSubjectService;
-import com.l024.ljl.util.UserLoginToken;
 import com.l024.ljl.vo.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,27 +20,18 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
     @Autowired
     private SysSubjectService sysSubjectService;
 
-    @ApiOperation(httpMethod = "GET",value = "添加试题",response = R.class,notes = "添加试题")
+    @ApiOperation(httpMethod = "Post",value = "添加试题",response = R.class,notes = "添加试题")
     @PostMapping("/save")
     @Override
     public R add(@RequestBody SysSubjectEntity sysSubjectEntity) {
-       /* System.out.println(type_id);
-        SysTypeEntity sysTypeEntity=new SysTypeEntity();
-        sysTypeEntity.setId(type_id);
-        sysSubjectEntity.setType(sysTypeEntity);
-        sysSubjectEntity.setOptions(optionEntities);*/
-        boolean add = sysSubjectService.add(sysSubjectEntity);
-        if(!add)
-            return R.error("添加试题失败");
-        else
-            return R.ok("添加试题成功",sysSubjectEntity);
+        boolean flag = sysSubjectService.add(sysSubjectEntity);
 
+        if (!flag) {
+            return R.error("添加试题失败");
+        } else {
+            return R.ok("添加试题成功", sysSubjectEntity);
+        }
     }
-//
-//    @Override
-//    public R add(SysSubjectEntity sysSubjectEntity) {
-//        return null;
-//    }
 
     @ApiOperation(httpMethod = "POST",value = "删除试题",response = R.class,notes = "删除试题")
     @PostMapping("/delete")
