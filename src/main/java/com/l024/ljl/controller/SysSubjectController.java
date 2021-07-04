@@ -20,7 +20,7 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
     @Autowired
     private SysSubjectService sysSubjectService;
 
-    @ApiOperation(httpMethod = "Post",value = "添加试题",response = R.class,notes = "添加试题")
+    @ApiOperation(httpMethod = "POST",value = "添加试题",response = R.class,notes = "添加试题")
     @PostMapping("/save")
     @Override
     public R add(@RequestBody SysSubjectEntity sysSubjectEntity) {
@@ -49,12 +49,12 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
     @Override
     public R update(@RequestBody SysSubjectEntity sysSubjectEntity) {
         boolean update = sysSubjectService.update(sysSubjectEntity);
-        if(update)
+        if(update) {
             return R.ok("更新成功");
-
-        return R.error("更新失败");
+        } else {
+            return R.error("更新失败");
+        }
     }
-
 
     @ApiOperation(httpMethod = "GET", value = "获取所有试卷信息", response = R.class,
             notes = "获取所有试卷信息")

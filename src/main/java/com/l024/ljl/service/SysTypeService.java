@@ -5,6 +5,7 @@ import com.l024.ljl.entity.PageEntity;
 import com.l024.ljl.entity.SysTypeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class SysTypeService implements BaseService<SysTypeEntity>{
             return true;
         else
             return false;
-
     }
 
     /**

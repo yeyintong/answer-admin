@@ -44,13 +44,20 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
             // 获取插入成功后的 sysSubjectEntity1 这条记录的选项属性
             List<SysOptionEntity> sysOptionEntityList = sysSubjectEntity1.getOptions();
             // 循环插入每个选项
-            for (SysOptionEntity sysOptionEntity : sysOptionEntityList) {
-                // 设置每一个 sysOptionEntity 中的 subject_id属性
-                sysOptionEntity.setSubject_id(subject_id);
-                // 将每一条 sysOptionEntity 记录插入 option表
-                SysOptionEntity sysOptionEntity1 = sysOptionDao.save(sysOptionEntity);
-                if (sysOptionEntity1 == null) {
-                    flag = false;
+            if (sysOptionEntityList == null) {
+                System.out.println("选项为空");
+                return false;
+            } else {
+                for (SysOptionEntity sysOptionEntity : sysOptionEntityList) {
+                    System.out.println(sysOptionEntity);
+                    // 设置每一个 sysOptionEntity 中的 subject_id属性
+                    sysOptionEntity.setSubject_id(subject_id);
+                    // 将每一条 sysOptionEntity 记录插入 option表
+                    System.out.println(sysOptionEntity);
+                    SysOptionEntity sysOptionEntity1 = sysOptionDao.save(sysOptionEntity);
+                    if (sysOptionEntity1 == null) {
+                        flag = false;
+                    }
                 }
             }
             return flag;
@@ -93,12 +100,15 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
      */
     @Transactional
     public boolean update(SysSubjectEntity sysSubjectEntity) {
+        System.out.println(sysSubjectEntity);
         long id = sysSubjectEntity.getId();
         Optional<SysSubjectEntity> subjectEntity = sysSubjectDao.findById(id);
+
         if (subjectEntity == null) {
             return false;
         } else {
-            sysSubjectDao.save(sysSubjectEntity);
+            SysSubjectEntity sysSubjectEntity1 = sysSubjectDao.save(sysSubjectEntity);
+            System.out.println(sysSubjectEntity1);
             return true;
         }
     }

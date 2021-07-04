@@ -17,10 +17,9 @@ public class SysOptionEntity {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private long id;
     @Column
-    private String index;
+    private String letter;
     @Column
     private String content;
-
     @Column
     private long subject_id;
 

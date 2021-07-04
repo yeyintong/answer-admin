@@ -7,10 +7,7 @@ import com.l024.ljl.vo.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,12 +22,12 @@ public class SysTypeController implements BaseController<SysTypeEntity>{
     @ApiOperation(httpMethod = "POST",value = "添加类型",response = R.class,notes = "添加类型")
     @PostMapping("/save")
     @Override
-    public R add(SysTypeEntity sysTypeEntity) {
+    public R add(@RequestBody SysTypeEntity sysTypeEntity) {
         boolean add = sysTypeService.add(sysTypeEntity);
         if(!add)
             return R.error("添加失败");
         else
-            return R.ok("添加成功");
+            return R.ok("添加成功", sysTypeEntity);
 
     }
 
