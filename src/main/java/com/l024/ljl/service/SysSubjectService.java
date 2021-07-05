@@ -75,11 +75,44 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
     @Override
     public boolean del(long id) {
         try {
+            SysSubjectEntity sysSubjectEntity = sysSubjectDao.findById(id).get();
+            List<SysOptionEntity> optionEntityList = sysSubjectEntity.getOptions();
+            for (SysOptionEntity optionEntity : optionEntityList) {
+                System.out.println(optionEntity);
+                // 循环删除每一个选项
+                sysOptionDao.delete(optionEntity);
+            }
             sysSubjectDao.deleteById(id);
-        }catch (Exception e){
+        } catch (Exception e){
             return false;
         }
         return true;
+    }
+
+    /**
+     * 更新试题
+     * @param sysSubjectEntity
+     * @return
+     */
+    @Transactional
+    public boolean update(SysSubjectEntity sysSubjectEntity) {
+        long id = sysSubjectEntity.getId();
+        Optional<SysSubjectEntity> subjectEntity = sysSubjectDao.findById(id);
+
+        // 判断数据库是否存在 subjectEntity这条记录
+        if (subjectEntity == null) {
+            return false;
+        } else {
+            // 获取 sysSubjectEntity对象中的 options属性
+            List<SysOptionEntity> optionEntityList = sysSubjectEntity.getOptions();
+            // 修改 suject表
+            sysSubjectDao.save(sysSubjectEntity);
+            // 修改 option表
+            for (SysOptionEntity sysOptionEntity : optionEntityList) {
+                sysOptionDao.save(sysOptionEntity);
+            }
+            return true;
+        }
     }
 
     /**
@@ -91,26 +124,6 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
         List<SysSubjectEntity> list = new ArrayList<>();
         users.forEach(user->{list.add(user);});
         return list;
-    }
-
-    /**
-     * 更新试题
-     * @param sysSubjectEntity
-     * @return
-     */
-    @Transactional
-    public boolean update(SysSubjectEntity sysSubjectEntity) {
-        System.out.println(sysSubjectEntity);
-        long id = sysSubjectEntity.getId();
-        Optional<SysSubjectEntity> subjectEntity = sysSubjectDao.findById(id);
-
-        if (subjectEntity == null) {
-            return false;
-        } else {
-            SysSubjectEntity sysSubjectEntity1 = sysSubjectDao.save(sysSubjectEntity);
-            System.out.println(sysSubjectEntity1);
-            return true;
-        }
     }
 
     /**
