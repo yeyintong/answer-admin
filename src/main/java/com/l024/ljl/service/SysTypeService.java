@@ -80,4 +80,8 @@ public class SysTypeService implements BaseService<SysTypeEntity>{
     public PageEntity<SysTypeEntity> page(int page, int size) {
         return null;
     }
+
+    public long count(){
+        return sysTypeDao.count();
+    }
 }

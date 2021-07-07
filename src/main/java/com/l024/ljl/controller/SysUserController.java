@@ -64,14 +64,14 @@ public class SysUserController implements BaseController<SysUserEntity> {
 
     @ApiOperation(httpMethod = "GET", value = "删除用户", response = R.class,
             notes = "删除用户")
-    @GetMapping("/del")
-    @UserLoginToken
+    @PostMapping("/del")
+    //@UserLoginToken
     @Override
     public R del(Long id) {
         if(id>0){
             boolean del = sysUserService.del(id);
             if(del){
-                return R.ok("删除成功","");
+                return R.ok(200,"删除成功","");
             }
         }
         return R.error(500,"删除失败");
@@ -80,13 +80,13 @@ public class SysUserController implements BaseController<SysUserEntity> {
     @ApiOperation(httpMethod = "POST", value = "更新用户信息", response = R.class,
             notes = "更新用户信息")
     @PostMapping("/update")
-    @UserLoginToken
+    //@UserLoginToken
     @Override
     public R update(@RequestBody SysUserEntity sysUserEntity) {
         if(sysUserEntity!=null&&sysUserEntity.getId()>0){
             boolean update = sysUserService.update(sysUserEntity);
             if(update){
-                return R.ok("更新成功","");
+                return R.ok(200,"更新成功","");
             }
         }
         return R.error(500,"更新失败");
@@ -95,10 +95,10 @@ public class SysUserController implements BaseController<SysUserEntity> {
     @ApiOperation(httpMethod = "GET", value = "获取所有用户信息", response = R.class,
             notes = "获取所有用户信息")
     @GetMapping("/all")
-    @UserLoginToken
+    //@UserLoginToken
     @Override
     public R getAll() {
-        return R.ok("获取所有用户成功",sysUserService.getAll());
+        return R.ok(200,"获取所有用户成功",sysUserService.getAll());
     }
 
     @ApiOperation(httpMethod = "GET", value = "获取当前用户信息", response = R.class,
@@ -216,6 +216,13 @@ public class SysUserController implements BaseController<SysUserEntity> {
         } catch (IOException e) {
             return R.error(500,"上传失败,IO异常");
         }
+    }
+
+    @GetMapping("/count")
+    public R count(){
+        long count = sysUserService.count();
+        return R.ok(200,"获取成功",count);
+
     }
 
 }

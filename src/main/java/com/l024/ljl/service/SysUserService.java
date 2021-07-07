@@ -116,4 +116,8 @@ public class SysUserService implements BaseService<SysUserEntity>{
         }
         return null;
     }
+
+    public long count(){
+        return sysUserDao.count();
+    }
 }

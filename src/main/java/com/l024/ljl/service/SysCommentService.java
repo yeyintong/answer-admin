@@ -72,4 +72,22 @@ public class SysCommentService {
         }
         return null;
     }
+
+    public List<SysCommentEntity> getAllComment(){
+        return sysCommentDao.findAll();
+    }
+
+    public long count(){
+        return sysCommentDao.count();
+
+    }
+
+    public boolean delete(long commentId){
+        try {
+            sysCommentDao.deleteById(commentId);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

@@ -22,7 +22,7 @@ public class SysUserEntity {
     private String name;
     @Column
     //接受但是不序列化
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column
     private String avator;

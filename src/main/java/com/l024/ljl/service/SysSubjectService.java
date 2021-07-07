@@ -1,5 +1,6 @@
 package com.l024.ljl.service;
 
+import com.l024.ljl.dao.SysCommentDao;
 import com.l024.ljl.dao.SysOptionDao;
 import com.l024.ljl.dao.SysSubjectDao;
 import com.l024.ljl.dao.SysTypeDao;
@@ -10,7 +11,6 @@ import com.l024.ljl.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +26,9 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
     private SysOptionDao sysOptionDao;
     @Autowired
     private SysTypeDao sysTypeDao;
+
+    @Autowired
+    private SysCommentDao sysCommentDao;
 
     /**
      * 增加试题
@@ -82,6 +85,9 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
                 // 循环删除每一个选项
                 sysOptionDao.delete(optionEntity);
             }
+            // 删除评论
+            sysCommentDao.deleteBySubjectId(id);
+            // 删除题目
             sysSubjectDao.deleteById(id);
         } catch (Exception e){
             return false;
@@ -158,5 +164,9 @@ public class SysSubjectService implements BaseService<SysSubjectEntity> {
            return sysSubjectDao.findSysSubjectEntitiesByTitle(name);
         }
         return null;
+    }
+
+    public long count(){
+        return sysSubjectDao.count();
     }
 }

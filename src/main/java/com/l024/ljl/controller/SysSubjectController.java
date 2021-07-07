@@ -29,7 +29,7 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
         if (!flag) {
             return R.error("添加试题失败");
         } else {
-            return R.ok("添加试题成功", sysSubjectEntity);
+            return R.ok(200,"添加试题成功", sysSubjectEntity);
         }
     }
 
@@ -39,7 +39,7 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
     public R del(Long id) {
         boolean del = sysSubjectService.del(id);
         if(del)
-            return R.ok("删除成功");
+            return R.ok(200,"删除成功");
 
         return R.error("删除失败");
     }
@@ -50,7 +50,7 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
     public R update(@RequestBody SysSubjectEntity sysSubjectEntity) {
         boolean update = sysSubjectService.update(sysSubjectEntity);
         if(update) {
-            return R.ok("更新成功");
+            return R.ok(200,"更新成功");
         } else {
             return R.error("更新失败");
         }
@@ -94,5 +94,12 @@ public class SysSubjectController implements BaseController<SysSubjectEntity>{
         List<SysSubjectEntity> myList = sysSubjectEntitiesByTitle.stream().distinct().collect(Collectors.toList());
 
         return R.ok("获取成功",myList);
+    }
+
+    @GetMapping("/count")
+    public R count(){
+        long count = sysSubjectService.count();
+        return R.ok(200,"获取成功",count);
+
     }
 }

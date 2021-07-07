@@ -56,4 +56,26 @@ public class SysCommentController {
         return R.ok("获取成功",comments);
     }
 
+    @GetMapping("/all")
+    public R comment_all(){
+        List<SysCommentEntity> allComment = sysCommentService.getAllComment();
+        return R.ok(200,"获取成功",allComment);
+    }
+
+    @GetMapping("/count")
+    public R count(){
+        long count = sysCommentService.count();
+        return R.ok(200,"获取成功",count);
+
+    }
+
+    @PostMapping("/del")
+    public R delete(long commentId){
+        boolean delete = sysCommentService.delete(commentId);
+        if (delete)
+            return R.ok(200,"删除成功");
+        else
+            return R.error("删除失败");
+
+    }
 }

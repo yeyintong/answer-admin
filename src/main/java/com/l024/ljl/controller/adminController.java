@@ -23,7 +23,7 @@ public class adminController {
 
     @ApiOperation(httpMethod = "POST",value = "管理员登录",response = R.class,notes = "管理员登录")
     @PostMapping("/login")
-    public R login(SysUserEntity user){
+    public R login(@RequestBody SysUserEntity user){
         System.out.println(user);
         if(user==null)
             return R.error("输入不能为空");
@@ -48,11 +48,17 @@ public class adminController {
         return R.error(500,"账户名或者密码不可为null");
     }
 
+    @GetMapping("/check-token")
+    public R check_token(){
+        return R.ok(200,"获取成功");
+    }
+
     @ApiOperation(httpMethod = "POST",value = "管理员注册",response = R.class,notes = "管理员注册")
     @PostMapping("/register")
-    public R register(SysUserEntity sysUserEntity){
+    public R register(@RequestBody SysUserEntity sysUserEntity){
         if(sysUserEntity==null)
             return R.error("输入信息错误");
+        System.out.println(sysUserEntity);
         if(!StringUtil.isEmpty(sysUserEntity.getPhone())&&!StringUtil.isEmpty(sysUserEntity.getPassword())){
             SysUserEntity userByPhone = sysUserService.getUserByPhone(sysUserEntity.getPhone());
             if(userByPhone!=null)
@@ -61,11 +67,16 @@ public class adminController {
             System.out.println(sysUserEntity);
             boolean add = sysUserService.add(sysUserEntity);
             if(add)
-                return R.ok("注册成功");
+                return R.ok(200,"注册成功");
             else
                 return R.error("注册失败");
         }
         else
             return R.error("密码或手机不能为空");
+    }
+
+    @GetMapping("/logout")
+    public R logout(){
+        return R.ok(200,"退出成功");
     }
 }
